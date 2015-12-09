@@ -1,5 +1,7 @@
 # :dizzy_face: [wrk](https://github.com/wg/wrk)p
 
+[![GoDoc](https://godoc.org/github.com/gobwas/wrkp?status.svg)](https://godoc.org/github.com/gobwas/wrkp)
+
 > wrk result go parser
 
 ## Install
@@ -22,8 +24,3 @@ wrk example.com > example.com.wrk
 
 wrkp -f *.wrk -r csv
 ```
-
-## Docs
-
-Are [here](https://godoc.org/github.com/gobwas/wrkp).
-
