@@ -7,7 +7,7 @@
 ## Install
 
 ```shell
-go get github.com/gobwas/wrkp
+go get github.com/gobwas/wrkp...
 ```
 
 ## Usage
