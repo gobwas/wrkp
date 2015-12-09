@@ -56,13 +56,13 @@ func GetFieldValue(r wrk.Result, f wrk.Field) string {
 		return fmt.Sprintf("%v", r.Connections)
 
 	case wrk.LatencyAvg:
-		return fmt.Sprintf("%v", r.Latency.Average)
+		return fmt.Sprintf("%v", r.Latency.Average.Nanoseconds())
 
 	case wrk.LatencyStdev:
-		return fmt.Sprintf("%v", r.Latency.Stdev)
+		return fmt.Sprintf("%v", r.Latency.Stdev.Nanoseconds())
 
 	case wrk.LatencyMax:
-		return fmt.Sprintf("%v", r.Latency.Max)
+		return fmt.Sprintf("%v", r.Latency.Max.Nanoseconds())
 
 	case wrk.LatencyDelta:
 		return fmt.Sprintf("%v", r.Latency.Delta)
@@ -83,7 +83,7 @@ func GetFieldValue(r wrk.Result, f wrk.Field) string {
 		return fmt.Sprintf("%v", r.Total.Requests)
 
 	case wrk.TotalDuration:
-		return fmt.Sprintf("%v", r.Total.Duration)
+		return fmt.Sprintf("%v", r.Total.Duration.Nanoseconds())
 
 	case wrk.TotalTransfer:
 		return fmt.Sprintf("%v", r.Total.Transfer)
