@@ -105,6 +105,9 @@ func GetFieldValue(r wrk.Result, f wrk.Field) string {
 
 	case wrk.TransferPerSec:
 		return fmt.Sprintf("%v", r.TransferPerSec)
+
+	case wrk.Label:
+		return fmt.Sprintf("%v", r.Label)
 	}
 
 	return ""

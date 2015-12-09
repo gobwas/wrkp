@@ -104,8 +104,8 @@ func main() {
 			os.Exit(1)
 		}
 
-		if label, ok := labels[i]; ok {
-			result.Label = label
+		if len(labels) > i {
+			result.Label = labels[i]
 		}
 
 		results = append(results, *result)
@@ -117,6 +117,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Fprint(os.Stdout, string(b))
+	os.Stdout.Write(b)
 	os.Exit(0)
 }
