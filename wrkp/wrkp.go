@@ -9,12 +9,13 @@ import (
 	baseScanner "github.com/gobwas/wrkp/scanner/base"
 	"github.com/gobwas/wrkp/wrk"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
-var file = flag.String("f", "", "file to parse (allows glob)")
+var file = flag.String("f", "", "use this file pattern instead of stdin (allows glob)")
 var report = &ReporterFlag{report_csv, []string{report_csv}}
 
 const (
@@ -44,28 +45,29 @@ func (r ReporterFlag) Get() interface{} {
 }
 
 func main() {
-	flag.Var(report, "resp", fmt.Sprintf("how should server response on message (%s)", strings.Join(report.e, ", ")))
+	flag.Var(report, "resp", fmt.Sprintf("report type (available: %s)", strings.Join(report.e, ", ")))
 	flag.Parse()
+	log.SetFlags(0)
 
 	var readers []io.Reader
 
 	if *file != "" {
 		p, err := filepath.Abs(*file)
 		if err != nil {
-			fmt.Println("resolve path error: ", err)
+			log.Println("resolve path error: ", err)
 			os.Exit(1)
 		}
 
 		matches, err := filepath.Glob(p)
 		if err != nil {
-			fmt.Println("glob error: ", err)
+			log.Println("glob error: ", err)
 			os.Exit(1)
 		}
 
 		for _, f := range matches {
 			file, err := os.OpenFile(f, os.O_RDONLY, 0)
 			if err != nil {
-				fmt.Printf("open file %s error: %s\n", f, err)
+				log.Printf("open file %s error: %s\n", f, err)
 				os.Exit(1)
 			}
 
@@ -92,15 +94,16 @@ func main() {
 	case report_csv:
 		rep = csvReporter.New(';')
 	default:
-		fmt.Println("unknown report")
+		log.Println("unknown report")
 		os.Exit(1)
 	}
 
 	b, err := rep.Generate(results, reporter.AllFields)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		os.Exit(1)
 	}
 
-	fmt.Println(string(b))
+	fmt.Fprint(os.Stdout, string(b))
+	os.Exit(0)
 }
