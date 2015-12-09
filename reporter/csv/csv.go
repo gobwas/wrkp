@@ -17,7 +17,7 @@ func New(d rune) *Reporter {
 
 //name;latency avg;latency stdev;latency max;latency +/-;rps avg;rps stdev;rps max;rps +/-;total req;total time;total traffic;errors connect;errors read;errors write;errors timeout;rps;transfersec;
 func (self *Reporter) Generate(r []wrk.Result, f []wrk.Field) (b []byte, err error) {
-	lines := make(map[int][]string)
+	lines := make([][]string, len(r)+1)
 
 	for _, field := range f {
 		lines[0] = append(lines[0], field.String())

@@ -22,5 +22,5 @@ Or
 wrk example.com > example.com.wrk
 ...
 
-wrkp -f *.wrk -r csv
+wrkp -f="$HOME/*.wrk" -r=csv
 ```
