@@ -6,6 +6,7 @@ import (
 )
 
 var AllFields = []wrk.Field{
+	wrk.Label,
 	wrk.Url,
 	wrk.Threads,
 	wrk.Connections,
@@ -26,6 +27,21 @@ var AllFields = []wrk.Field{
 	wrk.ErrorsTimeout,
 	wrk.RequestsPerSec,
 	wrk.TransferPerSec,
+}
+
+func AllExcept(exc ...wrk.Field) (result []wrk.Field) {
+All:
+	for _, f := range AllFields {
+		for _, e := range exc {
+			if f == e {
+				continue All
+			}
+		}
+
+		result = append(result, f)
+	}
+
+	return
 }
 
 func GetFieldValue(r wrk.Result, f wrk.Field) string {

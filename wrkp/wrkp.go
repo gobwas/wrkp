@@ -51,8 +51,20 @@ func main() {
 	flag.Parse()
 	log.SetFlags(0)
 
-	var readers []io.Reader
+	var rep reporter.Reporter
+	switch report.Get() {
+	case report_csv:
+		rep = csvReporter.New(',')
+	default:
+		log.Println("unknown report")
+		os.Exit(1)
+	}
 
+	var (
+		readers []io.Reader
+		labels  []string
+		fields  []wrk.Field
+	)
 	if *file != "" {
 		p, err := filepath.Abs(*file)
 		if err != nil {
@@ -73,14 +85,18 @@ func main() {
 				os.Exit(1)
 			}
 
+			labels = append(labels, filepath.Base(f))
 			readers = append(readers, file)
 		}
+
+		fields = reporter.AllFields
 	} else {
 		readers = []io.Reader{os.Stdin}
+		fields = reporter.AllExcept(wrk.Label)
 	}
 
 	var results []wrk.Result
-	for _, rd := range readers {
+	for i, rd := range readers {
 		p := baseParser.New(baseScanner.New(rd))
 		result, err := p.Parse()
 		if err != nil {
@@ -88,19 +104,14 @@ func main() {
 			os.Exit(1)
 		}
 
+		if label, ok := labels[i]; ok {
+			result.Label = label
+		}
+
 		results = append(results, *result)
 	}
 
-	var rep reporter.Reporter
-	switch report.Get() {
-	case report_csv:
-		rep = csvReporter.New(',')
-	default:
-		log.Println("unknown report")
-		os.Exit(1)
-	}
-
-	b, err := rep.Generate(results, reporter.AllFields)
+	b, err := rep.Generate(results, fields)
 	if err != nil {
 		log.Println(err)
 		os.Exit(1)

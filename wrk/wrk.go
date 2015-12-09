@@ -28,6 +28,7 @@ const (
 	ErrorsTimeout
 	RequestsPerSec
 	TransferPerSec
+	Label
 )
 
 func (f Field) String() string {
@@ -42,55 +43,58 @@ func (f Field) String() string {
 		return "Connections"
 
 	case LatencyAvg:
-		return "LatencyAvg"
+		return "Thread Latency Avg"
 
 	case LatencyStdev:
-		return "LatencyStdev"
+		return "Thread Latency Stdev"
 
 	case LatencyMax:
-		return "LatencyMax"
+		return "Thread Latency Max"
 
 	case LatencyDelta:
-		return "LatencyDelta"
+		return "Thread Latency Delta"
 
 	case RPSAvg:
-		return "RPSAvg"
+		return "Thread RPS Avg"
 
 	case RPSStdev:
-		return "RPSStdev"
+		return "Thread RPS Stdev"
 
 	case RPSMax:
-		return "RPSMax"
+		return "Thread RPS Max"
 
 	case RPSDelta:
-		return "RPSDelta"
+		return "Thread RPS Delta"
 
 	case TotalRequests:
-		return "TotalRequests"
+		return "Total Requests"
 
 	case TotalDuration:
-		return "TotalDuration"
+		return "Total Duration"
 
 	case TotalTransfer:
-		return "TotalTransfer"
+		return "Total Transfer"
 
 	case ErrorsConnect:
-		return "ErrorsConnect"
+		return "Connect Errors"
 
 	case ErrorsRead:
-		return "ErrorsRead"
+		return "Read Errors"
 
 	case ErrorsWrite:
-		return "ErrorsWrite"
+		return "Write Errors"
 
 	case ErrorsTimeout:
-		return "ErrorsTimeout"
+		return "Timeout Errors"
 
 	case RequestsPerSec:
-		return "RequestsPerSec"
+		return "Requests Per Second"
 
 	case TransferPerSec:
-		return "TransferPerSec"
+		return "Transfer Per Second"
+
+	case Label:
+		return "Label"
 
 	default:
 		return ""
@@ -117,6 +121,7 @@ type Errors struct {
 }
 
 type Result struct {
+	Label          string
 	Url            *url.URL
 	Threads        int64
 	Connections    int64
