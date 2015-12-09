@@ -18,6 +18,8 @@ import (
 var file = flag.String("f", "", "use this file pattern instead of stdin (allows glob)")
 var report = &ReporterFlag{report_csv, []string{report_csv}}
 
+//var delimiter = flag.String("d", ",", "delimiter for csv report")
+
 const (
 	report_csv = "csv"
 )
@@ -92,7 +94,7 @@ func main() {
 	var rep reporter.Reporter
 	switch report.Get() {
 	case report_csv:
-		rep = csvReporter.New(';')
+		rep = csvReporter.New(',')
 	default:
 		log.Println("unknown report")
 		os.Exit(1)
